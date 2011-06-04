@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-  {% for report in reports %}
-    <pre>{{ report | tojson }}</pre>
-  {% endfor %}
+    <pre>{{ reports_json }}</pre>
 {% endblock %}
 
 
