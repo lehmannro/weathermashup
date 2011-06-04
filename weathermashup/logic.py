@@ -47,15 +47,12 @@ def reports_time_series(reports):
             'wind_speed': value_diff(report, reports,
                 lambda k: k.get('wind_speed')),
             }
-
         series_item = {
             'time_delta': time_delta,
             'report': report,
             'value_diffs': value_diffs,
             }
         time_series.append(series_item)
-    from pprint import pprint
-    pprint(time_series)
     return time_series
 
 def value_diff(report, reports, key_func, samples=3):
