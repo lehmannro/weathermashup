@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+  Gib mal was ein.
+
+  {% if input_warning %}
+    <span class="input-warning">{{ input_warning }}</span>
+  {% endif %}
+
+{% endblock %}
+
+

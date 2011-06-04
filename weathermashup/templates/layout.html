@@ -24,13 +24,17 @@
 
   <div id="container">
     <header>
-
+    Alle reden vom Wetter. Wir sammeln.
+      <form action="/timeline" method="GET">
+        <input name="location" placeholder="Betahaus, Berlin">
+        <input type="submit" value=">>">
+      </form>
     </header>
     <div id="main" role="main">
-
+      {% block content %}no content!{% endblock %}
     </div>
     <footer>
-
+      Developed at "Random Hacks of Kindness", Berlin.
     </footer>
   </div> <!-- eo #container -->
 
