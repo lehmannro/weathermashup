@@ -31,7 +31,8 @@ def source(location):
     for day, forecast in enumerate(info['forecasts']):
         yield dict(
             time_from = start.replace(hour=0, minute=0) + timedelta(days=day),
-            time_to = (start + timedelta(days=day)).replace(hour=0, minute=0),
+            # educated guess: temperature maximum reached at 12-o-clock
+            time_to = (start + timedelta(days=day)).replace(hour=12, minute=0),
             condition = forecast['condition'],
             temperature_min = fahrenheit(forecast['low']),
             temperature_max = fahrenheit(forecast['high']),
