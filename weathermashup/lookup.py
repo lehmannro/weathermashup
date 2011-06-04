@@ -8,6 +8,7 @@ def _make_thread_func(ep, location, out_queue):
     def _nop():
         func = ep.load()
         for report in func(location):
+            report['source'] = ep.name
             out_queue.put(report)
     return _nop
 
@@ -16,7 +17,6 @@ def reports_by_location(location):
     threads = []
     for ep in iter_entry_points(ENTRY_POINT_GROUP):
         func = _make_thread_func(ep, location, queue)
-        print func
         t = Thread(target=func)
         t.daemon = True
         t.start()
