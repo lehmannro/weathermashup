@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from lookup import reports_by_location
+from logic import reports_time_series
 
 from datetime import datetime
 import json 
@@ -26,10 +27,11 @@ def timeline():
         return index(input_warning="Bitte gib einen Ort ein!")
 
     reports = reports_by_location(location)
-    reports_json = to_json(reports)
+    time_series = reports_time_series(reports)
+    time_series_json = to_json(time_series)
     return render_template("timeline.html", 
-            reports=reports,
-            reports_json=reports_json)
+            location=location,
+            time_series_json=time_series_json)
 
 
 if __name__ == "__main__":

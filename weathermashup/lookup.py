@@ -16,7 +16,6 @@ def reports_by_location(location):
     threads = []
     for ep in iter_entry_points(ENTRY_POINT_GROUP):
         func = _make_thread_func(ep, location, queue)
-        print func
         t = Thread(target=func)
         t.daemon = True
         t.start()

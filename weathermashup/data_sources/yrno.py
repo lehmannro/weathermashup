@@ -18,7 +18,7 @@ XML_MAPPING = dict(
 )
 
 
-def find_weather(location):
+def weather_data(location):
     place, (lat, lng) = geocoders.Google().geocode(location)
     
     yrno_url = "http://api.yr.no/weatherapi/locationforecast/1.8/?lat=%(lat)s;lon=%(lon)s"
@@ -51,4 +51,4 @@ def find_weather(location):
 if __name__ == "__main__":
     import sys
     from pprint import pprint
-    pprint(list(find_weather(sys.argv[1])))
+    pprint(list(weather_data(sys.argv[1])))
