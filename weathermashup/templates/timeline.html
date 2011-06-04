@@ -5,7 +5,7 @@
       height: 100%;
       overflow-x: scroll;
     }
-    
+
     body {
       width: 10000px;
       min-height: 100%;
@@ -17,7 +17,7 @@
       height: 100%;
       background: url(/static/img/wolke1.png);
     }
-    
+
     .wolke2 {
       height: 100%;
       background: url(/static/img/wolke2.png);
@@ -39,6 +39,9 @@
     .data {
       margin: 2px 10px;
     }
+    .warning {
+        text-decoration:blink;
+    }
     #plot {
       width: 800px;
       height: 300px;
@@ -55,8 +58,10 @@
         {% for entry in entries.itervalues() %}
         <div class="entry">
             <div class="source">{{ entry.source }}</div>
-            {% if entry.temperature_max %}<div class="data temp_max">Temp Max: {{ entry.temperature_max }}°C</div>{% endif %}
-            {% if entry.temperature_current %}<div class="data temp_cur">Temp Cur: {{ entry.temperature_current }}°C</div>{% endif %}
+            {% if entry.temperature_max %}<div class="data temp_max">Temp Max: {{ "%3.1f" % entry.temperature_max }}°C</div>{% endif %}
+            {% if entry.temperature_current %}<div class="data temp_cur">Temp Cur: {{ "%3.1f" % entry.temperature_current }}°C</div>{% endif %}
+            {% if entry.wind_speed %}<div class="data wind_spd">Wind: {{ "%4.1f" % entry.wind_speed }} km/h {{ entry.wind_direction }}</div>{% endif %}
+            {% if entry.warning %}<div class="data warning">Warning: {{ entry.warning }}</div>{% endif %}
         </div>
         {% endfor %}
     </div>
