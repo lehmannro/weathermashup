@@ -8,6 +8,7 @@ def _make_thread_func(ep, location, out_queue):
     def _nop():
         func = ep.load()
         for report in func(location):
+            report['source'] = ep.name
             out_queue.put(report)
     return _nop
 
