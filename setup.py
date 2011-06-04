@@ -27,5 +27,7 @@ setup(name='weathermashup',
       metar = weathermashup.data_sources.metar:weather_scraper
       yrno = weathermashup.data_sources.yrno:weather_data
       wetter_com = weathermashup.data_sources.wetter_com:find
+      [console_scripts]
+      fetchweather = weathermashup.lookup:cmdline
       """,
       )
