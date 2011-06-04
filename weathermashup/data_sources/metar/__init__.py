@@ -9,6 +9,10 @@ from datetime import datetime
 
 from weathermashup.data_sources.yahoo import YAHOO_CONDITION_CODES
 
+# maximal number of stations
+NUM_STATIONS = 3
+
+
 # codes from http://www.flugzeuginfo.net/table_airportcodes_country-location_en.php
 ICAO_CODES = {
 'OABN': 'BAMYAN                                   BAMYAN                                                        AFGHANISTAN',
@@ -4105,7 +4109,7 @@ def weather_scraper(location):
     rep = None
     rp=pymetar.ReportParser()
     data = []
-    for station in stations:
+    for station in stations[:NUM_STATIONS+1]:
         try:
             rf=pymetar.ReportFetcher(station)
             rep=rf.FetchReport()
