@@ -28,6 +28,7 @@ def timeline():
     reports = reports_by_location(location)
     reports_json = to_json(reports)
     return render_template("timeline.html", 
+            location=location,
             reports=reports,
             reports_json=reports_json)
 
