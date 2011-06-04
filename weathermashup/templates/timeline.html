@@ -23,23 +23,21 @@
       background: url(/static/img/wolke2.png);
       height: 1200px;
     }
-    .source {
-      clear: both;
+    .slot {
+      float:left;
+      margin:10px 10px 0 10px;
     }
-    .box {
-      width: 200px;
+    .title {
       background-color: white;
-/*      padding: 20px;*/
-      margin: 20px;
-      float: left;
+    }
+    .entry {
+        margin:10px 0;
+    }
+    .source {
+      font-size:x-large;
     }
     .data {
       margin: 2px 10px;
-    }
-    .title {
-      width: 180px;
-      background-color: #3c9bec;
-      padding: 10px;
     }
     #plot {
       width: 800px;
@@ -51,19 +49,19 @@
 {% block content %}
 <div class="wolke1">
   <div class="wolke2">
-    {% for source_name, source in grouped_by_source.iteritems() %}
-    <div class="source">
-      {% for entry in source %}
-        <div class="box">
-          <div class="title">{{ source_name }}</div>
-          <div class="data">{{ entry.report.time_from }} - {{ entry.report.time_to }}</div>
-          {% if entry.report.temperature_current %}
-            <div class="data temp_cur">{{ entry.report.temperature_current }}°C</div>
-          {% endif %}
+    {% for slot,entries in grouped_by_timeslot %}
+    <div class="slot">
+        <div class="title">{{ slot }}</div>
+        {% for entry in entries.itervalues() %}
+        <div class="entry">
+            <div class="source">{{ entry.source }}</div>
+            {% if entry.temperature_max %}<div class="data temp_max">Temp Max: {{ entry.temperature_max }}°C</div>{% endif %}
+            {% if entry.temperature_current %}<div class="data temp_cur">Temp Cur: {{ entry.temperature_current }}°C</div>{% endif %}
         </div>
-      {% endfor %}
-      </div>
+        {% endfor %}
+    </div>
     {% endfor %}
+    <div style="clear:both" />
     <div id="plot"></div>
   </div>
 </div>
