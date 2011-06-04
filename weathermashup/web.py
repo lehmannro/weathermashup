@@ -48,7 +48,7 @@ def timeline():
 
         slot = entry['report']['time_from']
         # bucket into 3-hour time slots
-        slot = slot.replace(hour=slot.hour // 3 * 3)
+        slot = slot.replace(hour=slot.hour // 3 * 3, minute=0)
         if slot != grouped_by_timeslot[-1][0]:
             grouped_by_timeslot.append((slot, defaultdict(dict)))
 
