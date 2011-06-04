@@ -27,5 +27,6 @@ setup(name='weathermashup',
       google = weathermashup.data_sources.google:source
       metar = weathermashup.data_sources.metar:weather_scraper
       yrno = weathermashup.data_sources.yrno:weather_data
+      wetter_com = weathermashup.data_sources.wetter_com:find
       """,
       )
