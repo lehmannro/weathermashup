@@ -11,15 +11,6 @@
       min-height: 100%;
       overflow-y: hidden;
       background-color: #3c9bec;
-/*      background-color: #99bbff;
-      background-image: -webkit-gradient(linear, left top, left bottom, from(#99bbff), to(#ffffff)); 
-      background-image: -webkit-linear-gradient(top, #99bbff, #ffffff); 
-      background-image:    -moz-linear-gradient(top, #99bbff, #ffffff); 
-      background-image:     -ms-linear-gradient(top, #99bbff, #ffffff); 
-      background-image:      -o-linear-gradient(top, #99bbff, #ffffff); 
-      background-image:         linear-gradient(top, #99bbff, #ffffff);
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#99bbff', EndColorStr='#ffffff'); */
-        
     }
 
     .wolke1 {
@@ -28,26 +19,31 @@
     }
     
     .wolke2 {
-/*      padding: 20em;*/
       height: 100%;
       background: url(/static/img/wolke2.png);
-/*      width: 800px;*/
-      height: 800px;
+      height: 1200px;
     }
     .source {
-      float: left;
+      clear: both;
     }
     .box {
       width: 200px;
       background-color: white;
 /*      padding: 20px;*/
       margin: 20px;
-/*      float: left;*/
+      float: left;
+    }
+    .data {
+      margin: 2px 10px;
     }
     .title {
-      width: 200px;
+      width: 180px;
       background-color: #3c9bec;
       padding: 10px;
+    }
+    #plot {
+      width: 800px;
+      height: 300px;
     }
 
   </style>
@@ -55,22 +51,20 @@
 {% block content %}
 <div class="wolke1">
   <div class="wolke2">
-    {# {{ grouped_by_source | pprint }} #}
     {% for source_name, source in grouped_by_source.iteritems() %}
     <div class="source">
       {% for entry in source %}
         <div class="box">
-          <div class="title">FIXME Source</div>
-          {{ entry.report.time_from }} - {{ entry.report.time_to }}
+          <div class="title">{{ source_name }}</div>
+          <div class="data">{{ entry.report.time_from }} - {{ entry.report.time_to }}</div>
           {% if entry.report.temperature_current %}
-            <div class="temp_cur">{{ entry.report.temperature_current }}°C</div>
+            <div class="data temp_cur">{{ entry.report.temperature_current }}°C</div>
           {% endif %}
         </div>
       {% endfor %}
       </div>
     {% endfor %}
-    <pre>
-<!--{{ time_series_json }}--></pre>
+    <div id="plot"></div>
   </div>
 </div>
 {% endblock %}
@@ -100,6 +94,7 @@
   };
   $('.wolke1').parallax({ "coeff":-0.65 });
   $('.wolke2').parallax({ "coeff":1.15 });
+  $.plot($("#plot"), [[0,0],[1,2],[2,3]]);
     
 {% endblock %}
 
