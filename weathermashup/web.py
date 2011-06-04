@@ -32,7 +32,7 @@ def timeline():
     time_series_json = to_json(time_series)
 
     grouped_by_source = {}
-    grouped_by_timeslot = defaultdict(lambda:defaultdict(dict))
+    grouped_by_timeslot = [(0, {})]
     for entry in time_series:
         source = entry['report']['source']
         if not grouped_by_source.has_key(source):
@@ -43,9 +43,13 @@ def timeline():
         slot = entry['report']['time_from']
         # bucket into 3-hour time slots
         slot = slot.replace(hour=slot.hour // 3 * 3)
+        if slot != grouped_by_timeslot[-1][0]:
+            grouped_by_timeslot.append((slot, defaultdict(dict)))
+
         #XXX currently, the last item in a slot always wins. this no good.
-        merger = grouped_by_timeslot[slot][entry['report']['source']]
+        merger = grouped_by_timeslot[-1][1][entry['report']['source']]
         merger.update(entry['report'])
+    grouped_by_timeslot.pop(0)
 
     return render_template("timeline.html",
             location=location,
