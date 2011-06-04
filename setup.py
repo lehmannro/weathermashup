@@ -23,7 +23,6 @@ setup(name='weathermashup',
       entry_points="""
       # -*- Entry points: -*-
       [weather.sources]
-      armageddon = weathermashup.data_sources.mayan_calender:armageddon
       google = weathermashup.data_sources.google:source
       metar = weathermashup.data_sources.metar:weather_scraper
       yrno = weathermashup.data_sources.yrno:weather_data
