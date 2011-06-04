@@ -22,5 +22,6 @@ setup(name='weathermashup',
       ],
       entry_points="""
       # -*- Entry points: -*-
+      [weather.sources]
       """,
       )
