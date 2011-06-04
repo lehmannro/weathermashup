@@ -9,8 +9,7 @@ from datetime import datetime
 
 from weathermashup.data_sources.yahoo import YAHOO_CONDITION_CODES
 
-# maximal number of stations
-NUM_STATIONS = 3
+DEBUG = False
 
 
 # codes from http://www.flugzeuginfo.net/table_airportcodes_country-location_en.php
@@ -4058,12 +4057,23 @@ ICAO_CODES = {
 
 
 
+# TODO: hook into google to get nearest airport to given location
 def get_stations_from_location(location):
     upper = location.upper()
+    seps = [',', ' ']
+    for sep in seps:
+        parts = upper.split(sep)
+        if len(parts) > 1:
+            break
+
     stations = []
-    for k,v in ICAO_CODES.iteritems():
-        if upper == k or v.find(upper) != -1:
-            stations.append(k)
+    for part in parts:
+        for k,v in ICAO_CODES.iteritems():
+            if part == k or v.find(part) != -1:
+                stations.append(k)
+        if stations:
+            break
+
     return stations
 
 
@@ -4103,39 +4113,41 @@ def get_humidity(raw_humidity):
 def weather_scraper(location):
     stations = get_stations_from_location(location)
     if not stations:
-        sys.stderr.write('no station')
+        if DEBUG: sys.stderr.write("no stations found\n")
         return None
 
     rep = None
-    rp=pymetar.ReportParser()
-    data = []
-    for station in stations[:NUM_STATIONS+1]:
+    data = None
+    rp = pymetar.ReportParser()
+    for station in stations:
         try:
-            rf=pymetar.ReportFetcher(station)
-            rep=rf.FetchReport()
-            pr=rp.ParseReport(rep)
+            rf = pymetar.ReportFetcher(station)
+            rep = rf.FetchReport()
+            pr = rp.ParseReport(rep)
 
-            now=get_datetime(pr.getISOTime())
-            temp=get_temp(pr.getTemperatureCelsius())
-            data.append({
-                'url': pr.getReportURL(),
-                'name': pr.getStationName(),
-                'time_from': now,
-                'time_to': now,
-                'temperature_min': temp,
-                'temperature_max': temp,
-                'temperature_current': temp,
-                'wind_direction': get_wind_direction(pr.getWindCompass()),
-                'wind_speed': get_wind_speed(pr.getWindSpeed()),
-                'condition': get_condition(pr.getWeather()),
-                'precipitation_probability': None,
-                'precipitation_amount': None,
-                'humidity': get_humidity(pr.getHumidity()),
-                'sunrise_time': None,
-                'sunset_time': None,
-                'warnings': None,
-            })
+            date = get_datetime(pr.getISOTime())
+            temp = get_temp(pr.getTemperatureCelsius())
+            if not data or date > data['time_from']:
+                data = {
+                    'url': pr.getReportURL(),
+                    'name': pr.getStationName(),
+                    'time_from': date,
+                    'time_to': date,
+                    'temperature_min': temp,
+                    'temperature_max': temp,
+                    'temperature_current': temp,
+                    'wind_direction': get_wind_direction(pr.getWindCompass()),
+                    'wind_speed': get_wind_speed(pr.getWindSpeed()),
+                    'condition': get_condition(pr.getWeather()),
+                    'precipitation_probability': None,
+                    'precipitation_amount': None,
+                    'humidity': get_humidity(pr.getHumidity()),
+                    'sunrise_time': None,
+                    'sunset_time': None,
+                    'warnings': None,
+                }
         except Exception, e:
+            if DEBUG: sys.stderr.write("no report for station %s\n" % station)
             pass
 
     return data
