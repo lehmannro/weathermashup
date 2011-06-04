@@ -30,4 +30,7 @@ def reports_by_location(location):
         reports.append(queue.get())
     return sorted(reports, key=lambda x: x.get('time_from'))
 
-
+def cmdline():
+    import pprint
+    import sys
+    pprint.pprint(reports_by_location(" ".join(sys.argv[1:])))

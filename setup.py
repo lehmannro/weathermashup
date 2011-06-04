@@ -25,5 +25,7 @@ setup(name='weathermashup',
       [weather.sources]
       armageddon = weathermashup.data_sources.mayan_calender:armageddon
       google = weathermashup.data_sources.google:source
+      [console_scripts]
+      fetchweather = weathermashup.lookup:cmdline
       """,
       )
