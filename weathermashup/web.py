@@ -16,6 +16,12 @@ def json_types(obj):
 def to_json(obj):
     return json.dumps(obj, default=json_types, indent=2)
 
+def get_curr_or_max_temperature(report):
+    for key in ('temperature_current', 'temperature_max'):
+        if report.has_key(key):
+            return report[key]
+    return None
+
 @app.route("/")
 def index(input_warning=None):
     return render_template("index.html",
@@ -46,11 +52,24 @@ def timeline():
         #XXX currently, the last item in a slot always wins. this no good.
         merger = grouped_by_timeslot[slot][entry['report']['source']]
         merger.update(entry['report'])
+    
+    plot_data = []
+    for source_name, source in grouped_by_source.iteritems():
+        source_list = []
+        for entry in source:
+            time = int(entry['report']['time_from'].strftime("%s"))*1000
+            temperature = get_curr_or_max_temperature(entry['report'])
+            
+            if temperature:
+                source_list.append((time, temperature))
+        plot_data.append(source_list)
+
 
     return render_template("timeline.html",
             location=location,
             grouped_by_source=grouped_by_source,
-            grouped_by_timeslot=grouped_by_timeslot)
+            grouped_by_timeslot=grouped_by_timeslot,
+            plot_data=to_json(plot_data))
 
 
 if __name__ == "__main__":
