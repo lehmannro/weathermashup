@@ -24,5 +24,6 @@ setup(name='weathermashup',
       # -*- Entry points: -*-
       [weather.sources]
       armageddon = weathermashup.data_sources.mayan_calender:armageddon
+      google = weathermashup.data_sources.google:source
       """,
       )
