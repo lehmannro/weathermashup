@@ -4150,7 +4150,7 @@ def weather_scraper(location):
             if DEBUG: sys.stderr.write("no report for station %s\n" % station)
             pass
 
-    return data
+    return [data]
 
 
 
