@@ -10,15 +10,15 @@
       width: 10000px;
       min-height: 100%;
       overflow-y: hidden;
-
-      background-color: #99bbff;
+      background-color: #3c9bec;
+/*      background-color: #99bbff;
       background-image: -webkit-gradient(linear, left top, left bottom, from(#99bbff), to(#ffffff)); 
       background-image: -webkit-linear-gradient(top, #99bbff, #ffffff); 
       background-image:    -moz-linear-gradient(top, #99bbff, #ffffff); 
       background-image:     -ms-linear-gradient(top, #99bbff, #ffffff); 
       background-image:      -o-linear-gradient(top, #99bbff, #ffffff); 
       background-image:         linear-gradient(top, #99bbff, #ffffff);
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#99bbff', EndColorStr='#ffffff'); 
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#99bbff', EndColorStr='#ffffff'); */
         
     }
 
@@ -28,19 +28,47 @@
     }
     
     .wolke2 {
-      padding: 20em;
+/*      padding: 20em;*/
       height: 100%;
       background: url(/static/img/wolke2.png);
+/*      width: 800px;*/
+      height: 800px;
     }
-
+    .source {
+      float: left;
+    }
+    .box {
+      width: 200px;
+      background-color: white;
+/*      padding: 20px;*/
+      margin: 20px;
+/*      float: left;*/
+    }
+    .title {
+      width: 200px;
+      background-color: #3c9bec;
+      padding: 10px;
+    }
 
   </style>
 {% endblock %}
 {% block content %}
 <div class="wolke1">
   <div class="wolke2">
-    foo schnasel
-
+    {# {{ grouped_by_source | pprint }} #}
+    {% for source_name, source in grouped_by_source.iteritems() %}
+    <div class="source">
+      {% for entry in source %}
+        <div class="box">
+          <div class="title">FIXME Source</div>
+          {{ entry.report.time_from }} - {{ entry.report.time_to }}
+          {% if entry.report.temperature_current %}
+            <div class="temp_cur">{{ entry.report.temperature_current }}°C</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      </div>
+    {% endfor %}
     <pre>
 <!--{{ time_series_json }}--></pre>
   </div>

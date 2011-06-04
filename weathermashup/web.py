@@ -29,9 +29,18 @@ def timeline():
     reports = reports_by_location(location)
     time_series = reports_time_series(reports)
     time_series_json = to_json(time_series)
+    # import pdb; pdb.set_trace()
+    grouped_by_source = {}
+    for entry in time_series:
+        source = entry['report']['source']
+        if not grouped_by_source.has_key(source):
+            grouped_by_source[source] = [entry]
+        else:
+            grouped_by_source[source].append(entry)
+
     return render_template("timeline.html", 
             location=location,
-            time_series_json=time_series_json)
+            grouped_by_source=grouped_by_source)
 
 
 if __name__ == "__main__":
