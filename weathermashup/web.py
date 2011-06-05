@@ -75,8 +75,8 @@ def timeline():
                 if 'temperature_max' in report:
                     temps_max.append((time, report['temperature_max']))
 
-        plot_data.append(dict(label=source_name, data=temps_min))
-        plot_data.append(dict(label=source_name + "max", data=temps_max))
+        plot_data.append(dict(id=source_name, label=source_name, data=temps_min))
+        plot_data.append(dict(data=temps_max, fillBetween=source_name, lines=dict(fill=True)))
 
         if precipitation_list:
             plot_data.append(dict(label=source_name + " precipitation",
