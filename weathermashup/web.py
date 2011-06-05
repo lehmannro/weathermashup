@@ -94,15 +94,13 @@ def timeline():
                               label=source_name,
                               data=temps_min,
                               color=COLORS[source_name]))
-        plot_data.append(dict(label=source_name + "max",
-                              data=temps_max,
+        plot_data.append(dict(data=temps_max,
                               color=COLORS[source_name],
                               fillBetween=source_name,
                               lines=dict(fill=True)))
 
         if precipitation_list:
-            plot_data.append(dict(label=source_name + " precipitation",
-                                  data=precipitation_list,
+            plot_data.append(dict(data=precipitation_list,
                                   bars=dict(show=True),
                                   color=COLORS[source_name],
                                   yaxis=2))
