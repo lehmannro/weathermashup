@@ -90,12 +90,15 @@ def timeline():
                 if 'temperature_max' in report:
                     temps_max.append((time, report['temperature_max']))
 
-        plot_data.append(dict(label=source_name,
+        plot_data.append(dict(id=source_name,
+                              label=source_name,
                               data=temps_min,
                               color=COLORS[source_name]))
         plot_data.append(dict(label=source_name + "max",
                               data=temps_max,
-                              color=COLORS[source_name]))
+                              color=COLORS[source_name],
+                              fillBetween=source_name,
+                              lines=dict(fill=True)))
 
         if precipitation_list:
             plot_data.append(dict(label=source_name + " precipitation",
