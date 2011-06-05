@@ -115,7 +115,7 @@ body {
 }
 
 #table table {
-  margin-top: 4.7em;
+  margin-top: 2em;
   margin-left: 20em;
 }
 
@@ -215,18 +215,23 @@ body {
    text-decoration:blink;
 }
 #legend {
-   background:white;
+   background-color: #162a74;
+   color: #fff;
    position:fixed;
    left:0;
-   top:6.7em;
+   top:8.8em;
    opacity: 0.5;
 }
 #legend div {
    padding-left: 10px;
    padding-right: 10px;
    line-height:45px;
-   height: 40px;
+   height: 47px;
    opacity: 1;
+}
+
+#logo {
+  padding-left: 20em;
 }
 
 #plot {
