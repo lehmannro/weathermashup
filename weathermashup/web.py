@@ -46,7 +46,7 @@ def timeline():
     if not location or len(location) < 3:
         return index(input_warning="Bitte gib einen Ort ein!")
 
-    reports = reports_by_location(location)
+    reports = reports_by_location(location.encode("utf-8"))
     time_series = reports_time_series(reports)
     time_series_json = to_json(time_series)
 
