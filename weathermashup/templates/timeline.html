@@ -71,15 +71,21 @@
 {% block js %}
   var plot_data = {{ plot_data|safe }};
   $.plot($("#plot"), plot_data, {
+    grid: {
+      borderColor: "#162A74"
+    },
     xaxis: {
+      color: "#004",
       mode: "time",
       timeformat: "%d.%m." },
     yaxes: [ {
+        color: "#004",
         tickFormatter: function(val) {
           return val + " °C";
         }
       },
       {
+        color: "#004",
         alignTicksWithAxis: 1,
         position: "right",
         tickFormatter: function(val, axis) {
