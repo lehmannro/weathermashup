@@ -58,23 +58,23 @@ YAHOO_CONDITION_CODES = {
 }
 
 WIND_DIRECTIONS = {
-    '0': 'N  ',
+    '0.0': 'N  ',
     '22.5': 'NNE',
-    '45': 'NE ',
+    '45.0': 'NE ',
     '67.5': 'ENE',
-    '90': 'E  ',
+    '90.0': 'E  ',
     '112.5': 'ESE',
-    '135': 'SE ',
+    '135.0': 'SE ',
     '157.5': 'SSE',
-    '180': 'S  ',
+    '180.0': 'S  ',
     '202.5': 'SSW',
-    '225': 'SW',
+    '225.0': 'SW',
     '247.5': 'WSW',
-    '270': 'W  ',
+    '270.0': 'W  ',
     '292.5': 'WNW',
-    '315': 'NW',
+    '315.0': 'NW',
     '337.5': 'NNW',
-    '360': 'N  ',
+    '360.0': 'N  ',
 }
 
 
@@ -110,15 +110,13 @@ def source(location):
     data = [{
         'time_from': cond_date,
         'time_to': cond_date,
-        'temperature_min': None,
-        'temperature_max': None,
         'temperature_current': float(info.findall("//{%s}condition" % ns)[0].get('temp')),
         'wind_direction': wind_direction,
-        'wind_speed': info.findall("//{%s}wind" % ns)[0].get('speed'),
+        'wind_speed': float(info.findall("//{%s}wind" % ns)[0].get('speed')),
         'condition': condition,
         'precipitation_probability': None,
         'precipitation_amount': None,
-        'humidity': info.findall("//{%s}atmosphere" % ns)[0].get('humidity'),
+        'humidity': float(info.findall("//{%s}atmosphere" % ns)[0].get('humidity')),
         'sunrise_time': sunrise_time,
         'sunset_time': sunset_time,
         'warnings': None,
@@ -129,15 +127,15 @@ def source(location):
             condition = YAHOO_CONDITION_CODES[forecast.get('code')]
         except KeyError:
             condition = forecast.get('text')
-        forecast_date = datetime.strptime(forecast.get('date'), '%d %b %Y')
+        time_from = datetime.strptime(forecast.get('date'), '%d %b %Y')
+        time_to = datetime.combine(time_from.date(), datetime.strptime('23:59', '%H:%M').time())
         data.append({
-            'time_from': forecast_date,
-            'time_to': forecast_date,
+            'time_from': time_from,
+            'time_to': time_to,
             'temperature_min': float(forecast.get('low')),
             'temperature_max': float(forecast.get('high')),
             'condition': condition,
         })
-
     return data
 
 

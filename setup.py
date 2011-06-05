@@ -33,3 +33,4 @@ setup(name='weathermashup',
       fetchweather = weathermashup.lookup:cmdline
       """,
       )
+

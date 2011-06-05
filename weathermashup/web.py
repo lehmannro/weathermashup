@@ -15,7 +15,8 @@ COLORS = dict(
     wwo="#afd8f8",
     google="#cb4b4b",
     yrno="#4da74d",
-    wetter_com="#9440ed"
+    wetter_com="#9440ed",
+    yahoo="#cf837e",
 )
 
 def json_types(obj):
