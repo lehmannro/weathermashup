@@ -21,6 +21,10 @@ def index(input_warning=None):
     return render_template("index.html",
             input_warning=input_warning)
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 @app.route("/timeline")
 def timeline():
     location = request.args.get('location')
@@ -55,10 +59,13 @@ def timeline():
     for source_name, source in grouped_by_source.iteritems():
         temps_min = []
         temps_max = []
+        precipitation_list = []
 
         for entry in source:
             report = entry['report']
             time = int(report['time_from'].strftime("%s"))*1000
+            if report.has_key('precipitation_amount'):
+                precipitation_list.append((time, report['precipitation_amount']))
             if 'temperature_current' in report:
                 temps_min.append((time, report['temperature_current']))
                 temps_max.append((time, report['temperature_current']))
@@ -70,6 +77,12 @@ def timeline():
 
         plot_data.append(dict(label=source_name, data=temps_min))
         plot_data.append(dict(label=source_name + "max", data=temps_max))
+
+        if precipitation_list:
+            plot_data.append(dict(label=source_name + " precipitation",
+                                  data=precipitation_list,
+                                  bars=dict(show=True),
+                                  yaxis=2))
 
     return render_template("timeline.html",
             location=location,

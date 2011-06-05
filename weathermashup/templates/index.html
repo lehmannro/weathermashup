@@ -1,11 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
-  Gib mal was ein.
-
-  {% if input_warning %}
-    <span class="input-warning">{{ input_warning }}</span>
-  {% endif %}
-
+  <div id="intro-container">
+    <img src="/static/img/logo.jpg">
+    <div id="intro-box">
+      <h2>Alle reden vom Wetter. Wir sammeln.</h2>
+      <form action="/timeline" method="GET">
+        <input name="location" value="{{ location }}" placeholder="Betahaus, Berlin">
+        <!--input type="submit" value=">>"-->
+      </form>
+      {% if input_warning %}
+        <span class="input-warning">{{ input_warning }}</span>
+      {% endif %}
+      <div id="credits">
+        created at <a href="http://wiki.rhok.org/RHoK_2.0_-_Berlin">RHoK
+          Berlin</a> &middot; <a href="/about">more info</a>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 

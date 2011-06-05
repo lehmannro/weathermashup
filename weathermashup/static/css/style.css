@@ -81,21 +81,43 @@ a:hover { color: #036; }
  * Author: 
  */
 
+@font-face {
+  font-family: "Museo 300";
+  src: url("/static/fonts/Museo300-Regular.eot");
+  src: local("Museo 300"), local("Museo 300"),
+  url("/static/fonts/Museo300-Regular.otf") format("opentype"),
+  url("/static/fonts/Museo300-Regular.woff") format("woff"),
+  url("/static/fonts/Museo300-Regular.svg#Museo 300") format("svg");
+}
+
+
+
 html {
  height: 100%;
  overflow-x: scroll;
+ overflow-y: hidden;
 }
 
-body {
- width: 10000px;
- min-height: 100%;
- overflow-y: hidden;
- background-color: #3c9bec;
+body, input {
+  font-family: "Museo 300", sans-serif;
 }
+
+
+body {
+ /*width: 10000px;*/
+ height: 100%;
+ background-color: #2c52e0;
+}
+
 #table table, #table tr, #table td, #table th {
    padding: 5px;
    margin: 20px 0 20px 75px;
 }
+
+#table td {
+  min-width: 40em;
+}
+
 #wolke1 {
  height: 100%;
  background: url(/static/img/wolke1.png);
@@ -104,8 +126,53 @@ body {
 #wolke2 {
  height: 100%;
  background: url(/static/img/wolke2.png);
- height: 1200px;
 }
+
+#intro-container {
+  width: 600px;
+  margin: 0em auto;
+}
+
+#intro-box {
+  margin-top: 10em;
+  opacity: 0.8;
+  text-align: center;
+  width: 600px;
+  padding: 0em 0em 1em 0em;
+  background-color: white;
+}
+
+#intro-box h2 {
+  font-weight: normal;
+  font-size: 1.2em;
+  padding: 0.5em;
+  color: #fff;
+  background-color: #162a74;
+  margin-bottom: 2em;
+}
+
+#intro-box input {
+  padding: 0.4em;
+  font-size: 2em;
+  border: 1px solid #666;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  
+}
+
+.input-warning {
+  display: block;
+  color: red;
+  font-size: 1.6em;
+  font-weight: bold;
+  margin-top: 2em;
+}
+
+#intro-box #credits {
+  margin-top: 3em;
+  color: #162a74
+} 
+
 .slot {
    margin:10px 10px 0 10px;
    background-color: white;

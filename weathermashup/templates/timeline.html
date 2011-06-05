@@ -1,101 +1,92 @@
 {% extends "layout.html" %}
 {% block content %}
-<div id="wolke1">
-  <div id="wolke2">
-    <div id="table">
-      <div id="legend">
-          <div>Temp Max</div>
-          <div>Temp Cur</div>
-          <div>Wind Speed</div>
-          <div>Warning</div>
-      </div>
-
-      <table>
-      <tr>
-          {% for slot,entries in grouped_by_timeslot %}
-          <th class="slot" id="{{ slot }}">{{ slot }}</th>
-          {% endfor %}
-      </tr>
-
-      <tr>
-          {% for slot,entries in grouped_by_timeslot %}
-          <td class="data temp_max" id="temp_max_{{ slot }}">
-              {% for entry in entries.itervalues() %}
-                  {% if entry.temperature_max %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%3.1f" % entry.temperature_max }}°C</span><br />{% endif %}
-              {% endfor %}
-          </td>
-          {% endfor %}
-      </tr>
-
-      <tr>
-          {% for slot,entries in grouped_by_timeslot %}
-          <td class="data temp_cur" id="temp_cur_{{ slot }}">
-              {% for entry in entries.itervalues() %}
-                  {% if entry.temperature_current %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%3.1f" % entry.temperature_current }}°C</span><br />{% endif %}
-              {% endfor %}
-          </td>
-          {% endfor %}
-      </tr>
-
-      <tr>
-          {% for slot,entries in grouped_by_timeslot %}
-          <td class="data wind_spd" id="wind_spd_{{ slot }}">
-              {% for entry in entries.itervalues() %}
-                  {% if entry.wind_speed %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%4.1f" % entry.wind_speed }} km/h {{ entry.wind_direction }}</span><br />{% endif %}
-              {% endfor %}
-          </td>
-          {% endfor %}
-      </tr>
-
-
-      <tr>
-          {% for slot,entries in grouped_by_timeslot %}
-          <td class="data" id="warning_{{ slot }}">
-              {% for entry in entries.itervalues() %}
-                  {% if entry.warning %}<span class="source">{{ entry.source }}</span> <span class="warning value">{{ entry.warning }}<br />{% endif %}
-              {% endfor %}
-          </td>
-          {% endfor %}
-      </tr>
-
-      </table>
+  <div id="table">
+    <div id="legend">
+        <div>Temp Max</div>
+        <div>Temp Cur</div>
+        <div>Wind Speed</div>
+        <div>Warning</div>
     </div>
-    <div id="plot"></div>
+
+    <table>
+    <tr>
+        {% for slot,entries in grouped_by_timeslot %}
+        <th class="slot" id="{{ slot }}">{{ slot }}</th>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        {% for slot,entries in grouped_by_timeslot %}
+        <td class="data temp_max" id="temp_max_{{ slot }}">
+            {% for entry in entries.itervalues() %}
+                {% if entry.temperature_max %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%3.1f" % entry.temperature_max }}°C</span><br />{% endif %}
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        {% for slot,entries in grouped_by_timeslot %}
+        <td class="data temp_cur" id="temp_cur_{{ slot }}">
+            {% for entry in entries.itervalues() %}
+                {% if entry.temperature_current %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%3.1f" % entry.temperature_current }}°C</span><br />{% endif %}
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        {% for slot,entries in grouped_by_timeslot %}
+        <td class="data wind_spd" id="wind_spd_{{ slot }}">
+            {% for entry in entries.itervalues() %}
+                {% if entry.wind_speed %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%4.1f" % entry.wind_speed }} km/h {{ entry.wind_direction }}</span><br />{% endif %}
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+
+
+    <tr>
+        {% for slot,entries in grouped_by_timeslot %}
+        <td class="data" id="warning_{{ slot }}">
+            {% for entry in entries.itervalues() %}
+                {% if entry.warning %}<span class="source">{{ entry.source }}</span> <span class="warning value">{{ entry.warning }}<br />{% endif %}
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+
+    </table>
   </div>
-</div>
+  <div id="plot"></div>
 {% endblock %}
+
 {% block js %}
-
-
-  $.fn.parallax = function(options){
-      var $$ = $(this);
-      offset = $$.offset();
-      var defaults = {
-          "start": 0,
-          "stop": offset.left + $$.width(),
-          "coeff": 0.95
-      };
-      var opts = $.extend(defaults, options);
-      return this.each(function(){
-      $(window).bind('scroll', function() {
-              windowLeft = $(window).scrollLeft();
-              if((windowLeft >= opts.start) && (windowLeft <= opts.stop)) {
-                  newCoord = windowLeft * opts.coeff;
-                  $$.css({
-                      "background-position": newCoord + "px 0"
-                  });
-              }
-          });
-      });
-  };
-  $('#wolke1').parallax({ "coeff":-0.65 });
-  $('#wolke2').parallax({ "coeff":1.15 });
   var plot_data = {{ plot_data|safe }};
-  $.plot($("#plot"), plot_data, {xaxis: {
-    mode: "time",
-    timeformat: "%d.%m."
-  }});
-    
+  $.plot($("#plot"), plot_data, {
+    xaxis: {
+      mode: "time",
+      timeformat: "%d.%m." },
+    yaxes: [ {
+        tickFormatter: function(val) {
+          return val + " °C";
+        }
+      },
+      {
+        alignTicksWithAxis: 1,
+        position: "right",
+        tickFormatter: function(val, axis) {
+          return val.toFixed(axis.tickDecimals) + " mm";
+        },
+    }],
+    series: { 
+      bars: {
+        barWidth: 3*3600000
+      },
+      points: {
+        radius: 3 }
+      }
+    });
 {% endblock %}
 
 
