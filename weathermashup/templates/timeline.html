@@ -4,7 +4,7 @@
     body {
       min-width: 12000px;
     }  
-    .flagged { background-color: #440000; }
+    .flagged { background-color: #990000; }
   </style>
 {% endblock %}
 {% block content %}
@@ -30,7 +30,7 @@
 
     <tr>
         {% for slot,entries in grouped_by_timeslot %}
-        <td class="data temp_max" id="temp_max_{{ slot }}">
+        <td class="data temp_max " id="temp_max_{{ slot }}">
             {% for entry in entries.itervalues() %}
                 {% if entry.temperature_max %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%3.1f" % entry.temperature_max }}°C</span><br />{% endif %}
             {% endfor %}
