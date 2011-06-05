@@ -14,7 +14,7 @@
     }
     table, tr, td, th {
         padding: 5px;
-        margin: 20px 0;
+        margin: 20px 0 20px 75px;
     }
     .wolke1 {
       height: 100%;
@@ -41,37 +41,54 @@
         margin: 2px 10px;
     }
     .data.temp_max {
-        background-color:#550000;
+        background-color:#000044;
     }
     .data.temp_cur {
-        background-color:#660000;
+        background-color:#000055;
     }
     .data.wind_spd {
-        background-color:#770000;
+        background-color:#000066;
     }
     .data.warning {
         background-color:#ff0000;
         text-decoration:blink;
     }
+    #legend {
+        background:white;
+        position:fixed;
+        left:0;
+        top:85px;
+    }
+    #legend div {
+        line-height:45px;
+    }
     #plot {
       width: 800px;
       height: 300px;
+      position: fixed;
+      bottom:10px;
+      left:10px;
     }
   </style>
 {% endblock %}
 {% block content %}
 <div class="wolke1">
   <div class="wolke2">
+    <div id="legend">
+        <div>Temp Max</div>
+        <div>Temp Cur</div>
+        <div>Wind Speed</div>
+        <div>Warning</div>
+    </div>
+
     <table>
     <tr>
-        <th>&nbsp;</th>
         {% for slot,entries in grouped_by_timeslot %}
         <th class="slot" id="{{ slot }}">{{ slot }}</th>
         {% endfor %}
     </tr>
 
     <tr>
-        <td>Temp Max</td>
         {% for slot,entries in grouped_by_timeslot %}
         <td class="data temp_max" id="temp_max_{{ slot }}">
             {% for entry in entries.itervalues() %}
@@ -82,7 +99,6 @@
     </tr>
 
     <tr>
-        <td>Temp Cur</td>
         {% for slot,entries in grouped_by_timeslot %}
         <td class="data temp_cur" id="temp_cur_{{ slot }}">
             {% for entry in entries.itervalues() %}
@@ -93,7 +109,6 @@
     </tr>
 
     <tr>
-        <td>Wind Speed</td>
         {% for slot,entries in grouped_by_timeslot %}
         <td class="data wind_spd" id="wind_spd_{{ slot }}">
             {% for entry in entries.itervalues() %}
@@ -105,11 +120,10 @@
 
 
     <tr>
-        <td>Warning</td>
         {% for slot,entries in grouped_by_timeslot %}
-        <td class="data warning" id="warning_{{ slot }}">
+        <td class="data" id="warning_{{ slot }}">
             {% for entry in entries.itervalues() %}
-                {% if entry.warning %}<span class="source">{{ entry.source }}</span> <span class="value">{{ entry.warning }}<br />{% endif %}
+                {% if entry.warning %}<span class="source">{{ entry.source }}</span> <span class="warning value">{{ entry.warning }}<br />{% endif %}
             {% endfor %}
         </td>
         {% endfor %}
