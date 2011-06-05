@@ -32,6 +32,7 @@ def find(location):
             'time_from': ti, 
             'time_to': ti
             }
+        fcast['wind_direction'] = fcast['wind_direction'].upper().replace('O', 'E')
         forecasts.append(fcast)
     return forecasts
 
