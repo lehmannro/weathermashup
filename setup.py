@@ -28,6 +28,7 @@ setup(name='weathermashup',
       yrno = weathermashup.data_sources.yrno:weather_data
       wetter_com = weathermashup.data_sources.wetter_com:find
       wwo = weathermashup.data_sources.worldweatheronline:source
+      yahoo = weathermashup.data_sources.yahoo:source
       [console_scripts]
       fetchweather = weathermashup.lookup:cmdline
       """,
