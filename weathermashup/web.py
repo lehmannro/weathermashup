@@ -9,6 +9,15 @@ import json
 
 app = Flask(__name__)
 
+
+COLORS = dict(
+    metar="#edc240",
+    wwo="#afd8f8",
+    google="#cb4b4b",
+    yrno="#4da74d",
+    wetter_com="#9440ed"
+)
+
 def json_types(obj):
     if isinstance(obj, datetime):
         return obj.strftime("%s")
@@ -81,13 +90,18 @@ def timeline():
                 if 'temperature_max' in report:
                     temps_max.append((time, report['temperature_max']))
 
-        plot_data.append(dict(label=source_name, data=temps_min))
-        plot_data.append(dict(label=source_name + "max", data=temps_max))
+        plot_data.append(dict(label=source_name,
+                              data=temps_min,
+                              color=COLORS[source_name]))
+        plot_data.append(dict(label=source_name + "max",
+                              data=temps_max,
+                              color=COLORS[source_name]))
 
         if precipitation_list:
             plot_data.append(dict(label=source_name + " precipitation",
                                   data=precipitation_list,
                                   bars=dict(show=True),
+                                  color=COLORS[source_name],
                                   yaxis=2))
 
     return render_template("timeline.html",
