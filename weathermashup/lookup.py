@@ -1,8 +1,18 @@
 from pkg_resources import iter_entry_points
 from threading import Thread
 from Queue import Queue
+from beaker.cache import CacheManager
+from beaker.util import parse_cache_config_options
 
 ENTRY_POINT_GROUP = "weather.sources"
+
+cache_opts = {
+    'cache.type': 'file',
+    'cache.data_dir': '/tmp/',
+    'cache.lock_dir': '/tmp/'
+}
+cache = CacheManager(**parse_cache_config_options(cache_opts))
+
 
 def _make_thread_func(ep, location, out_queue):
     def _nop():
@@ -12,6 +22,7 @@ def _make_thread_func(ep, location, out_queue):
             out_queue.put(report)
     return _nop
 
+@cache.cache('reports', expire=900)
 def reports_by_location(location):
     queue = Queue()
     threads = []
@@ -28,7 +39,8 @@ def reports_by_location(location):
         if queue.empty():
             break
         reports.append(queue.get())
-    return sorted(reports, key=lambda x: x.get('time_from'))
+    reports = sorted(reports, key=lambda x: x.get('time_from'))
+    return reports
 
 def cmdline():
     import pprint
