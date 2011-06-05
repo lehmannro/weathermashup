@@ -70,10 +70,30 @@
 
 {% block js %}
   var plot_data = {{ plot_data|safe }};
-  $.plot($("#plot"), plot_data, {xaxis: {
-    mode: "time",
-    timeformat: "%d.%m."
-  }});
+  $.plot($("#plot"), plot_data, {
+    xaxis: {
+      mode: "time",
+      timeformat: "%d.%m." },
+    yaxes: [ {
+        tickFormatter: function(val) {
+          return val + " °C";
+        }
+      },
+      {
+        alignTicksWithAxis: 1,
+        position: "right",
+        tickFormatter: function(val, axis) {
+          return val.toFixed(axis.tickDecimals) + " mm";
+        },
+    }],
+    series: { 
+      bars: {
+        barWidth: 3*3600000
+      },
+      points: {
+        radius: 3 }
+      }
+    });
 {% endblock %}
 
 

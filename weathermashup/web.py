@@ -22,12 +22,6 @@ def to_json(obj):
 def datetimeformat(ctx, value, format='%A, %H:%M'):
     return value.strftime(format)
 
-def get_curr_or_max_temperature(report):
-    for key in ('temperature_current', 'temperature_max'):
-        if report.has_key(key):
-            return report[key]
-    return None
-
 @app.route("/")
 def index(input_warning=None):
     return render_template("index.html",
@@ -69,14 +63,32 @@ def timeline():
 
     plot_data = []
     for source_name, source in grouped_by_source.iteritems():
-        source_list = []
-        for entry in source:
-            time = int(entry['report']['time_from'].strftime("%s"))*1000
-            temperature = get_curr_or_max_temperature(entry['report'])
+        temps_min = []
+        temps_max = []
+        precipitation_list = []
 
-            if temperature:
-                source_list.append((time, temperature))
-        plot_data.append(dict(label=source_name, data=source_list))
+        for entry in source:
+            report = entry['report']
+            time = int(report['time_from'].strftime("%s"))*1000
+            if report.has_key('precipitation_amount'):
+                precipitation_list.append((time, report['precipitation_amount']))
+            if 'temperature_current' in report:
+                temps_min.append((time, report['temperature_current']))
+                temps_max.append((time, report['temperature_current']))
+            else:
+                if 'temperature_min' in report:
+                    temps_min.append((time, report['temperature_min']))
+                if 'temperature_max' in report:
+                    temps_max.append((time, report['temperature_max']))
+
+        plot_data.append(dict(label=source_name, data=temps_min))
+        plot_data.append(dict(label=source_name + "max", data=temps_max))
+
+        if precipitation_list:
+            plot_data.append(dict(label=source_name + " precipitation",
+                                  data=precipitation_list,
+                                  bars=dict(show=True),
+                                  yaxis=2))
 
     return render_template("timeline.html",
             location=location,
