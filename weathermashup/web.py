@@ -66,7 +66,7 @@ def timeline():
 
             if temperature:
                 source_list.append((time, temperature))
-        plot_data.append(source_list)
+        plot_data.append(dict(label=source_name, data=source_list))
 
     return render_template("timeline.html",
             location=location,
