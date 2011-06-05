@@ -2,12 +2,17 @@
 {% block head %}
   <style>
     body {
-      min-width: 10000px;
+      min-width: 12000px;
     }  
     .flagged { background-color: #440000; }
   </style>
 {% endblock %}
 {% block content %}
+  <div id="logo">
+    <a href="./">
+      <img src="/static/img/logo.jpg" style="width:200px; height: 58px">
+    </a>
+  </div>
   <div id="table">
     <div id="legend">
         <div>Max. Temperature</div>
@@ -72,15 +77,21 @@
 {% block js %}
   var plot_data = {{ plot_data|safe }};
   $.plot($("#plot"), plot_data, {
+    grid: {
+      borderColor: "#162A74"
+    },
     xaxis: {
+      color: "#004",
       mode: "time",
       timeformat: "%d.%m." },
     yaxes: [ {
+        color: "#004",
         tickFormatter: function(val) {
           return val + " °C";
         }
       },
       {
+        color: "#004",
         alignTicksWithAxis: 1,
         position: "right",
         tickFormatter: function(val, axis) {
