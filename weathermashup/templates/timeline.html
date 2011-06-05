@@ -1,9 +1,16 @@
 {% extends "layout.html" %}
+{% block head %}
+  <style>
+    body {
+      min-width: 10000px;
+    }  
+  </style>
+{% endblock %}
 {% block content %}
   <div id="table">
     <div id="legend">
-        <div>Temp Max</div>
-        <div>Temp Cur</div>
+        <div>Max. Temperature</div>
+        <div>Current Temperature</div>
         <div>Wind Speed</div>
         <div>Warning</div>
     </div>
@@ -11,7 +18,7 @@
     <table>
     <tr>
         {% for slot,entries in grouped_by_timeslot %}
-        <th class="slot" id="{{ slot }}">{{ slot }}</th>
+        <th class="slot" id="{{ slot }}">{{ slot | datetimeformat }}</th>
         {% endfor %}
     </tr>
 

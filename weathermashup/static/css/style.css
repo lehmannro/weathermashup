@@ -114,8 +114,19 @@ body {
    margin: 20px 0 20px 75px;
 }
 
+#table table {
+  margin-top: 4.7em;
+  margin-left: 20em;
+}
+
+#table th {
+  font-weight: bold;
+  text-align: left;
+}
+
 #table td {
-  min-width: 40em;
+  min-width: 15em;
+  height: 40px;
 }
 
 #wolke1 {
@@ -174,44 +185,54 @@ body {
 } 
 
 .slot {
+  background-color: #162a74; 
    margin:10px 10px 0 10px;
-   background-color: white;
+   color: white;
 }
 .entry {
    margin:10px 0;
 }
 .source {
+  display: inline-block;
  font-size:xx-small;
+ min-width: 40%;
 }
 .data {
-   color:white;
+   background-color: white;
    margin: 2px 10px;
 }
 .data.temp_max {
-   background-color:#000044;
+   color:#000044;
 }
 .data.temp_cur {
-   background-color:#000055;
+   color:#000055;
 }
 .data.wind_spd {
-   background-color:#000066;
+   color:#000066;
 }
 .data.warning {
-   background-color:#ff0000;
+   color:#ff0000;
    text-decoration:blink;
 }
 #legend {
    background:white;
    position:fixed;
    left:0;
-   top:85px;
+   top:6.7em;
+   opacity: 0.5;
 }
 #legend div {
+   padding-left: 10px;
+   padding-right: 10px;
    line-height:45px;
+   height: 40px;
+   opacity: 1;
 }
+
 #plot {
  width: 800px;
  height: 300px;
+ margin-left: 20em;
  position: fixed;
  bottom:10px;
  left:10px;
