@@ -12,7 +12,10 @@
       overflow-y: hidden;
       background-color: #3c9bec;
     }
-
+    table, tr, td, th {
+        padding: 5px;
+        margin: 20px 0;
+    }
     .wolke1 {
       height: 100%;
       background: url(/static/img/wolke1.png);
@@ -24,49 +27,96 @@
       height: 1200px;
     }
     .slot {
-      float:left;
-      margin:10px 10px 0 10px;
-    }
-    .title {
-      background-color: white;
+        margin:10px 10px 0 10px;
+        background-color: white;
     }
     .entry {
         margin:10px 0;
     }
     .source {
-      font-size:x-large;
+      font-size:xx-small;
     }
     .data {
-      margin: 2px 10px;
+        color:white;
+        margin: 2px 10px;
     }
-    .warning {
+    .data.temp_max {
+        background-color:#550000;
+    }
+    .data.temp_cur {
+        background-color:#660000;
+    }
+    .data.wind_spd {
+        background-color:#770000;
+    }
+    .data.warning {
+        background-color:#ff0000;
         text-decoration:blink;
     }
     #plot {
       width: 800px;
       height: 300px;
     }
-
   </style>
 {% endblock %}
 {% block content %}
 <div class="wolke1">
   <div class="wolke2">
-    {% for slot,entries in grouped_by_timeslot %}
-    <div class="slot">
-        <div class="title">{{ slot }}</div>
-        {% for entry in entries.itervalues() %}
-        <div class="entry">
-            <div class="source">{{ entry.source }}</div>
-            {% if entry.temperature_max %}<div class="data temp_max">Temp Max: {{ "%3.1f" % entry.temperature_max }}°C</div>{% endif %}
-            {% if entry.temperature_current %}<div class="data temp_cur">Temp Cur: {{ "%3.1f" % entry.temperature_current }}°C</div>{% endif %}
-            {% if entry.wind_speed %}<div class="data wind_spd">Wind: {{ "%4.1f" % entry.wind_speed }} km/h {{ entry.wind_direction }}</div>{% endif %}
-            {% if entry.warning %}<div class="data warning">Warning: {{ entry.warning }}</div>{% endif %}
-        </div>
+    <table>
+    <tr>
+        <th>&nbsp;</th>
+        {% for slot,entries in grouped_by_timeslot %}
+        <th class="slot" id="{{ slot }}">{{ slot }}</th>
         {% endfor %}
-    </div>
-    {% endfor %}
-    <div style="clear:both" />
+    </tr>
+
+    <tr>
+        <td>Temp Max</td>
+        {% for slot,entries in grouped_by_timeslot %}
+        <td class="data temp_max" id="temp_max_{{ slot }}">
+            {% for entry in entries.itervalues() %}
+                {% if entry.temperature_max %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%3.1f" % entry.temperature_max }}°C</span><br />{% endif %}
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        <td>Temp Cur</td>
+        {% for slot,entries in grouped_by_timeslot %}
+        <td class="data temp_cur" id="temp_cur_{{ slot }}">
+            {% for entry in entries.itervalues() %}
+                {% if entry.temperature_current %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%3.1f" % entry.temperature_current }}°C</span><br />{% endif %}
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+
+    <tr>
+        <td>Wind Speed</td>
+        {% for slot,entries in grouped_by_timeslot %}
+        <td class="data wind_spd" id="wind_spd_{{ slot }}">
+            {% for entry in entries.itervalues() %}
+                {% if entry.wind_speed %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%4.1f" % entry.wind_speed }} km/h {{ entry.wind_direction }}</span><br />{% endif %}
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+
+
+    <tr>
+        <td>Warning</td>
+        {% for slot,entries in grouped_by_timeslot %}
+        <td class="data warning" id="warning_{{ slot }}">
+            {% for entry in entries.itervalues() %}
+                {% if entry.warning %}<span class="source">{{ entry.source }}</span> <span class="value">{{ entry.warning }}<br />{% endif %}
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+
+    </table>
+
     <div id="plot"></div>
   </div>
 </div>
