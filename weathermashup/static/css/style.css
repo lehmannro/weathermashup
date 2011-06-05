@@ -84,18 +84,20 @@ a:hover { color: #036; }
 html {
  height: 100%;
  overflow-x: scroll;
+ overflow-y: hidden;
 }
 
 body {
  width: 10000px;
- min-height: 100%;
- overflow-y: hidden;
+ height: 100%;
  background-color: #3c9bec;
 }
+
 #table table, #table tr, #table td, #table th {
    padding: 5px;
    margin: 20px 0 20px 75px;
 }
+
 #wolke1 {
  height: 100%;
  background: url(/static/img/wolke1.png);
@@ -104,7 +106,6 @@ body {
 #wolke2 {
  height: 100%;
  background: url(/static/img/wolke2.png);
- height: 1200px;
 }
 .slot {
    margin:10px 10px 0 10px;
