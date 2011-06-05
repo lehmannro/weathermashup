@@ -16,12 +16,6 @@ def json_types(obj):
 def to_json(obj):
     return json.dumps(obj, default=json_types, indent=2)
 
-def get_curr_or_max_temperature(report):
-    for key in ('temperature_current', 'temperature_max'):
-        if report.has_key(key):
-            return report[key]
-    return None
-
 @app.route("/")
 def index(input_warning=None):
     return render_template("index.html",
@@ -59,14 +53,23 @@ def timeline():
 
     plot_data = []
     for source_name, source in grouped_by_source.iteritems():
-        source_list = []
-        for entry in source:
-            time = int(entry['report']['time_from'].strftime("%s"))*1000
-            temperature = get_curr_or_max_temperature(entry['report'])
+        temps_min = []
+        temps_max = []
 
-            if temperature:
-                source_list.append((time, temperature))
-        plot_data.append(dict(label=source_name, data=source_list))
+        for entry in source:
+            report = entry['report']
+            time = int(report['time_from'].strftime("%s"))*1000
+            if 'temperature_current' in report:
+                temps_min.append((time, report['temperature_current']))
+                temps_max.append((time, report['temperature_current']))
+            else:
+                if 'temperature_min' in report:
+                    temps_min.append((time, report['temperature_min']))
+                if 'temperature_max' in report:
+                    temps_max.append((time, report['temperature_max']))
+
+        plot_data.append(dict(label=source_name, data=temps_min))
+        plot_data.append(dict(label=source_name + "max", data=temps_max))
 
     return render_template("timeline.html",
             location=location,
