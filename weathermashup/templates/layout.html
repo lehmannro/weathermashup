@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>weathermashup</title>
+  <title>WeatherPad</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -25,19 +25,9 @@
   <div id="wolke1">
     <div id="wolke2">
       <div id="container">
-        <header>
-          Alle reden vom Wetter. Wir sammeln.
-          <form action="/timeline" method="GET">
-            <input name="location" value="{{ location }}" placeholder="Betahaus, Berlin">
-            <input type="submit" value=">>">
-          </form>
-        </header>
         <div id="main" role="main">
           {% block content %}no content!{% endblock %}
         </div>
-        <footer>
-          Developed at "Random Hacks of Kindness", Berlin.
-        </footer>
       </div> <!-- eo #container -->
     </div>
   </div>
@@ -76,7 +66,6 @@
         };
         $('#wolke1').parallax({ "coeff":-0.65 });
         $('#wolke2').parallax({ "coeff":1.15 });
-      }});
     });
   </script>
   <!-- end scripts-->

@@ -27,6 +27,10 @@ def index(input_warning=None):
     return render_template("index.html",
             input_warning=input_warning)
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 @app.route("/timeline")
 def timeline():
     location = request.args.get('location')
