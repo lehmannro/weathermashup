@@ -4,6 +4,7 @@
     body {
       min-width: 10000px;
     }  
+    .flagged { background-color: #440000; }
   </style>
 {% endblock %}
 {% block content %}
@@ -18,7 +19,7 @@
     <table>
     <tr>
         {% for slot,entries in grouped_by_timeslot %}
-        <th class="slot" id="{{ slot }}">{{ slot | datetimeformat }}</th>
+        <th class="slot{%for entry in entries.itervalues()%}{%if entry.flagged%} flagged{%endif%}{%endfor%}" id="{{ slot }}">{{ slot | datetimeformat }}</th>
         {% endfor %}
     </tr>
 

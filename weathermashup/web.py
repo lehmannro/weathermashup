@@ -58,6 +58,8 @@ def timeline():
 
         #XXX currently, the last item in a slot always wins. this no good.
         merger = grouped_by_timeslot[-1][1][entry['report']['source']]
+        if any(value > 1 for value in entry['value_diffs'].itervalues()):
+            merger['flagged'] = True
         merger.update(entry['report'])
     grouped_by_timeslot.pop(0)
 
