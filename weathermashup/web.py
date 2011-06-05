@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from lookup import reports_by_location
 from logic import reports_time_series
+from jinja2 import evalcontextfilter
 
 from collections import defaultdict
 from datetime import datetime
@@ -15,6 +16,11 @@ def json_types(obj):
 
 def to_json(obj):
     return json.dumps(obj, default=json_types, indent=2)
+
+@app.template_filter()
+@evalcontextfilter
+def datetimeformat(ctx, value, format='%A, %H:%M'):
+    return value.strftime(format)
 
 def get_curr_or_max_temperature(report):
     for key in ('temperature_current', 'temperature_max'):
