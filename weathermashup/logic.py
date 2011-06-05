@@ -37,9 +37,9 @@ def reports_time_series(reports):
         time_delta = timedelta2seconds(cur_dt - last_dt)
         value_diffs = {
             'temperature_max': value_diff(report, reports,
-                lambda k: k.get('temperature_max', k.get('temperature_current'))),
+                lambda k: k.get('temperature_max')),
             'temperature_min': value_diff(report, reports,
-                lambda k: k.get('temperature_min', k.get('temperature_current'))),
+                lambda k: k.get('temperature_min')),
             'humiditiy': value_diff(report, reports,
                 lambda k: k.get('humiditiy')),
             'precipitation_amount': value_diff(report, reports,
@@ -67,5 +67,4 @@ def value_diff(report, reports, key_func, samples=3):
             weights += weight
             value += key_func(r)*weight
     return key_func(report) - (value/max(1, weights))
-
 

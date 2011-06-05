@@ -114,8 +114,19 @@ body {
    margin: 20px 0 20px 75px;
 }
 
+#table table {
+  margin-top: 2em;
+  margin-left: 20em;
+}
+
+#table th {
+  font-weight: bold;
+  text-align: left;
+}
+
 #table td {
-  min-width: 40em;
+  min-width: 15em;
+  height: 40px;
 }
 
 #wolke1 {
@@ -168,50 +179,79 @@ body {
   margin-top: 2em;
 }
 
-#intro-box #credits {
+#intro-box #credits,
+#intro-box #about {
   margin-top: 3em;
   color: #162a74
 } 
 
-.slot {
-   margin:10px 10px 0 10px;
-   background-color: white;
+#intro-box #about {
+  margin-top: 1em;
+  padding: 0em 1em 1em 1em;
+  text-align: left;
 }
+
+#intro-box #about p {
+  margin-bottom: 1em;
+}
+
+.slot {
+  background-color: #162a74; 
+   margin:10px 10px 0 10px;
+   color: white;
+}
+
+
 .entry {
    margin:10px 0;
 }
 .source {
+  display: inline-block;
  font-size:xx-small;
+ min-width: 40%;
 }
+
 .data {
-   color:white;
+   background-color: white;
    margin: 2px 10px;
 }
 .data.temp_max {
-   background-color:#000044;
+   color:#000044;
 }
 .data.temp_cur {
-   background-color:#000055;
+   color:#000055;
 }
 .data.wind_spd {
-   background-color:#000066;
+   color:#000066;
 }
 .data.warning {
-   background-color:#ff0000;
+   color:#ff0000;
    text-decoration:blink;
 }
 #legend {
-   background:white;
+   background-color: #162a74;
+   color: #fff;
    position:fixed;
    left:0;
-   top:85px;
+   top:8.8em;
+   opacity: 0.5;
 }
 #legend div {
+   padding-left: 10px;
+   padding-right: 10px;
    line-height:45px;
+   height: 47px;
+   opacity: 1;
 }
+
+#logo {
+  padding-left: 20em;
+}
+
 #plot {
  width: 800px;
  height: 300px;
+ margin-left: 20em;
  position: fixed;
  bottom:10px;
  left:10px;

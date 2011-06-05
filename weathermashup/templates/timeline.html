@@ -1,9 +1,22 @@
 {% extends "layout.html" %}
+{% block head %}
+  <style>
+    body {
+      min-width: 12000px;
+    }  
+    .flagged { background-color: #990000; }
+  </style>
+{% endblock %}
 {% block content %}
+  <div id="logo">
+    <a href="./">
+      <img src="/static/img/logo.jpg" style="width:200px; height: 58px">
+    </a>
+  </div>
   <div id="table">
     <div id="legend">
-        <div>Temp Max</div>
-        <div>Temp Cur</div>
+        <div>Max. Temperature</div>
+        <div>Current Temperature</div>
         <div>Wind Speed</div>
         <div>Warning</div>
     </div>
@@ -11,13 +24,13 @@
     <table>
     <tr>
         {% for slot,entries in grouped_by_timeslot %}
-        <th class="slot" id="{{ slot }}">{{ slot }}</th>
+        <th class="slot{%for entry in entries.itervalues()%}{%if entry.flagged%} flagged{%endif%}{%endfor%}" id="{{ slot }}">{{ slot | datetimeformat }}</th>
         {% endfor %}
     </tr>
 
     <tr>
         {% for slot,entries in grouped_by_timeslot %}
-        <td class="data temp_max" id="temp_max_{{ slot }}">
+        <td class="data temp_max " id="temp_max_{{ slot }}">
             {% for entry in entries.itervalues() %}
                 {% if entry.temperature_max %}<span class="source">{{ entry.source }}</span> <span class="value">{{ "%3.1f" % entry.temperature_max }}°C</span><br />{% endif %}
             {% endfor %}
@@ -64,15 +77,21 @@
 {% block js %}
   var plot_data = {{ plot_data|safe }};
   $.plot($("#plot"), plot_data, {
+    grid: {
+      borderColor: "#162A74"
+    },
     xaxis: {
+      color: "#004",
       mode: "time",
       timeformat: "%d.%m." },
     yaxes: [ {
+        color: "#004",
         tickFormatter: function(val) {
           return val + " °C";
         }
       },
       {
+        color: "#004",
         alignTicksWithAxis: 1,
         position: "right",
         tickFormatter: function(val, axis) {

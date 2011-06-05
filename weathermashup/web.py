@@ -1,12 +1,22 @@
 from flask import Flask, render_template, request
 from lookup import reports_by_location
 from logic import reports_time_series
+from jinja2 import evalcontextfilter
 
 from collections import defaultdict
 from datetime import datetime
 import json
 
 app = Flask(__name__)
+
+
+COLORS = dict(
+    metar="#edc240",
+    wwo="#afd8f8",
+    google="#cb4b4b",
+    yrno="#4da74d",
+    wetter_com="#9440ed"
+)
 
 def json_types(obj):
     if isinstance(obj, datetime):
@@ -15,6 +25,11 @@ def json_types(obj):
 
 def to_json(obj):
     return json.dumps(obj, default=json_types, indent=2)
+
+@app.template_filter()
+@evalcontextfilter
+def datetimeformat(ctx, value, format='%A, %H:%M'):
+    return value.strftime(format)
 
 @app.route("/")
 def index(input_warning=None):
@@ -31,7 +46,7 @@ def timeline():
     if not location or len(location) < 3:
         return index(input_warning="Bitte gib einen Ort ein!")
 
-    reports = reports_by_location(location)
+    reports = reports_by_location(location.encode("utf-8"))
     time_series = reports_time_series(reports)
     time_series_json = to_json(time_series)
 
@@ -52,6 +67,8 @@ def timeline():
 
         #XXX currently, the last item in a slot always wins. this no good.
         merger = grouped_by_timeslot[-1][1][entry['report']['source']]
+        if any(value > 1 for value in entry['value_diffs'].itervalues()):
+            merger['flagged'] = True
         merger.update(entry['report'])
     grouped_by_timeslot.pop(0)
 
@@ -75,13 +92,19 @@ def timeline():
                 if 'temperature_max' in report:
                     temps_max.append((time, report['temperature_max']))
 
-        plot_data.append(dict(label=source_name, data=temps_min))
-        plot_data.append(dict(label=source_name + "max", data=temps_max))
+        plot_data.append(dict(id=source_name,
+                              label=source_name,
+                              data=temps_min,
+                              color=COLORS[source_name]))
+        plot_data.append(dict(data=temps_max,
+                              color=COLORS[source_name],
+                              fillBetween=source_name,
+                              lines=dict(fill=True)))
 
         if precipitation_list:
-            plot_data.append(dict(label=source_name + " precipitation",
-                                  data=precipitation_list,
+            plot_data.append(dict(data=precipitation_list,
                                   bars=dict(show=True),
+                                  color=COLORS[source_name],
                                   yaxis=2))
 
     return render_template("timeline.html",
